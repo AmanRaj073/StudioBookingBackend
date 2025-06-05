@@ -1,29 +1,33 @@
-const express = require("express");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
-const cors = require("cors");
 const dotenv = require("dotenv");
 const fs = require("fs");
+const path = require("path");
+const cors = require("cors");
+const express = require("express");
 
 dotenv.config();
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Multer file storage setup
+// ✅ Health check route
+app.get("/", (req, res) => {
+  res.send("📡 API is live!");
+});
+
 const storage = multer.diskStorage({
-  destination: "uploads/",
+  destination: path.join("/tmp"),
   filename: (req, file, cb) => {
     cb(null, Date.now() + "_" + file.originalname);
   },
 });
 const upload = multer({ storage });
 
-// Route to handle form submission
 app.post(
-  "/submit-form",
+  "/api/submit-form",
   upload.fields([
     { name: "gstFile", maxCount: 1 },
     { name: "govIdFile", maxCount: 1 },
@@ -74,19 +78,17 @@ app.post(
 
       await transporter.sendMail(mailOptions);
 
-      // Delete uploaded files after sending
       Object.values(files)
         .flat()
         .forEach((file) => fs.unlink(file.path, () => {}));
 
-      console.log("✅ Email sent successfully.");
       res.status(200).json({ message: "Form submitted successfully!" });
     } catch (err) {
-      console.error("❌ Email error:", err);
+      console.error("Email error:", err);
       res.status(500).json({ error: "Something went wrong" });
     }
   }
 );
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// ✅ Required for Vercel
+module.exports = app;
