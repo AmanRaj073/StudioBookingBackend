@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post(
-  "/api/submit-form",
+  "/submit-form",
   upload.fields([
     { name: "gstFile", maxCount: 1 },
     { name: "govIdFile", maxCount: 1 },
