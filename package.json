@@ -1,12 +1,24 @@
 {
   "name": "form-mail-server",
   "version": "1.0.0",
-  "main": "api/index.js",
+  "description": "API server for form submission, email sending, and user booking management",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js"
+  },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.1",
     "multer": "^2.0.0",
     "nodemailer": "^7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
