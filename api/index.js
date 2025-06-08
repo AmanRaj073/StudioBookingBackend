@@ -1,6 +1,7 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const multer = require("multer");
 const nodemailer = require("nodemailer");
-const dotenv = require("dotenv");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
@@ -9,10 +10,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
-dotenv.config();
 require("../db");
-const User = require("../models/User");
-const Booking = require("../models/Booking");
+const User = require("../models/user");
+const Booking = require("../models/booking");
 
 const app = express();
 app.use(cors());
